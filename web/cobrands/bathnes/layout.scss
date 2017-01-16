@@ -1,0 +1,37 @@
+@import "_colours";
+@import "../sass/layout";
+
+.big-green-banner {
+  text-transform: none;
+}
+
+.nav-menu--main a.report-a-problem-btn {
+    color: white;
+}
+
+#front-main {
+  background-color: $front_main_background;
+}
+
+// Mappage is normal 4em, but other pages have slightly bigger header
+#site-header {
+    height: 5em;
+}
+#main-nav {
+    min-height: 5em;
+}
+body.mappage #main-nav {
+    min-height: 4em;
+}
+
+#site-logo {
+    width: 160px;
+    height: 5em;
+}
+
+body.mappage {
+  #site-logo {
+    height: 4em;
+    width: 127px;
+  }
+}
