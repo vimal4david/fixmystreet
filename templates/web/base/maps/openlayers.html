@@ -31,6 +31,11 @@
     <div id="map">
       [% INCLUDE 'maps/noscript_map.html' js = 1 %]
     </div>
+  [% IF c.req.params.no_pins %]
+    <a rel="nofollow" id="hide_pins_link" href="[% c.uri_with( { no_pins => 0 } ) %]">[% loc('Show pins') %]</a>
+  [% ELSE %]
+    <a rel="nofollow" id="hide_pins_link" href="[% c.uri_with( { no_pins => 1 } ) %]">[% loc('Hide pins') %]</a>
+  [% END %]
     [% IF map.copyright %]
     <div class="olControlAttribution" style="position: absolute;">[% map.copyright %]</div>
     [% END %]

@@ -1451,6 +1451,10 @@ html.js #map .noscript {
   top: 44px;
 }
 
+#hide_pins_link {
+  display: none;
+}
+
 //hide pins, show old reports etc
 #sub_map_links {
   position: absolute;
@@ -1466,10 +1470,6 @@ html.js #map .noscript {
     color:#fff;
     padding: flip(0.6em 3em 0.5em 1em, 0.6em 1em 0.5em 3em);
     background-repeat:no-repeat;
-    &#hide_pins_link {
-      background-image:url($image-sprite);
-      background-position: flip(right, -341px) -3976px;
-    }
     &#all_pins_link {
       background-image:url($image-sprite);
       background-position: flip(right, -337px) -4022px;

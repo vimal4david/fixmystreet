@@ -56,11 +56,6 @@
 
         <p id='sub_map_links'>
             [% map_sub_links %]
-            [% IF c.req.params.no_pins %]
-                <a id='hide_pins_link' rel='nofollow' href="[% c.uri_with( { no_pins => 0 } ) %]">[% loc('Show pins') %]</a>
-            [% ELSE %]
-                <a id='hide_pins_link' rel='nofollow' href="[% c.uri_with( { no_pins => 1 } ) %]">[% loc('Hide pins') %]</a>
-            [% END %]
             [% IF c.cobrand.country == 'GB' || c.cobrand.country == 'NO' %]
                 <span class="hidden">|</span>
                 [% IF c.req.params.all_pins %]
