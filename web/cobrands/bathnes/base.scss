@@ -1,0 +1,16 @@
+@import "../sass/h5bp";
+@import "./_colours";
+@import "../sass/mixins";
+
+@import "../sass/base";
+
+#site-logo {
+    background: url("/cobrands/bathnes/logo.png") 0 50% no-repeat;
+    background-size: contain;
+    width: 82px;
+    height: 48px;
+}
+
+h1, h2, h3, h4 {
+    color: $bath_green;
+}

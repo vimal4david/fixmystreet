@@ -1,0 +1,49 @@
+@import "_colours";
+@import "../sass/layout";
+
+.big-green-banner {
+  text-transform: none;
+}
+
+#site-header {
+    height: 7em;
+}
+#main-nav {
+    min-height: 7em;
+}
+body.mappage #main-nav {
+    min-height: 4em;
+}
+
+.nav-menu--main a.report-a-problem-btn {
+    color: white;
+    background-color: $birmingham_dark_purple;
+    &:hover {
+        background-color: $birmingham_dark_purple;
+    }
+}
+
+#front-main {
+  background-color: $front_main_background;
+}
+
+#site-logo {
+    width: 260px;
+    height: 7em;
+}
+body.mappage {
+  #site-logo {
+    width: 201px;
+    height: 4em;
+  }
+}
+
+.nav-menu--main {
+    a:hover {
+        text-decoration: underline;
+    }
+}
+
+#front-howto #front_stats div big {
+    color: $birmingham_purple;
+}
