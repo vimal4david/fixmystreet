@@ -306,6 +306,8 @@ sub body_check : Private {
     # We must now have a string to check
     my @bodies = $c->model('DB::Body')->search( { name => { -like => "$q_body%" } } )->all;
 
+    # XXX Needs to check translation also (or only have available at 'default' name)
+
     if (@bodies == 1) {
         $c->stash->{body} = $bodies[0];
         return;
