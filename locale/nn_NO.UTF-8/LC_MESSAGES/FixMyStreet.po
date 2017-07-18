@@ -1875,9 +1875,8 @@ msgid "Moderate this report"
 msgstr ""
 
 #: templates/web/base/report/update.html:12
-#, fuzzy
 msgid "Moderate this update"
-msgstr "Publisert av %s %s"
+msgstr ""
 
 #: templates/web/base/report/_main.html:69
 #: templates/web/base/report/update.html:49
@@ -3315,9 +3314,8 @@ msgid "Shortlisted by %s"
 msgstr ""
 
 #: templates/web/base/report/update.html:20
-#, fuzzy
 msgid "Show Photo?"
-msgstr "Vis nåler"
+msgstr ""
 
 #: templates/web/base/report/new/form_user_loggedin.html:54
 #: templates/web/base/report/new/form_user_loggedout_by_email.html:22
@@ -4888,15 +4886,3 @@ msgid "report"
 msgid_plural "reports"
 msgstr[0] "Alle rapportar"
 msgstr[1] "Alle rapportar"
-
-#, fuzzy
-#~ msgid "All inspectors"
-#~ msgstr "Alle rapportar"
-
-#, fuzzy
-#~ msgid "Report category:"
-#~ msgstr "Lag kategori"
-
-#, fuzzy
-#~ msgid "Reported %d days ago"
-#~ msgstr "Publisert av %s %s"

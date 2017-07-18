@@ -54,6 +54,15 @@ sub index : Path : Args(0) {
         $c->detach( 'redirect_body' );
     }
 
+    if (my $body = $c->get_param('body')) {
+        $body = $c->model('DB::Body')->find( { id => $body } );
+        if ($body) {
+            $body = $c->cobrand->short_name($body);
+            $c->res->redirect("/reports/$body");
+            $c->detach;
+        }
+    }
+
     # Fetch all bodies
     my @bodies = $c->model('DB::Body')->search({
         deleted => 0,
@@ -67,15 +76,21 @@ sub index : Path : Args(0) {
     $c->stash->{bodies} = \@bodies;
     $c->stash->{any_empty_bodies} = any { $_->get_column('area_count') == 0 } @bodies;
 
-    eval {
+    my $dashboard = eval {
+        my $data = File::Slurp::read_file(
+            FixMyStreet->path_to( '../data/all-reports-dashboard.json' )->stringify
+        );
+        $c->stash(decode_json($data));
+        return 1;
+    };
+    my $table = eval {
         my $data = File::Slurp::read_file(
             FixMyStreet->path_to( '../data/all-reports.json' )->stringify
         );
-        my $j = decode_json($data);
-        $c->stash->{fixed} = $j->{fixed};
-        $c->stash->{open} = $j->{open};
+        $c->stash(decode_json($data));
+        return 1;
     };
-    if ($@) {
+    if (!$dashboard && !$table) {
         my $message = _("There was a problem showing the All Reports page. Please try again later.");
         if ($c->config->{STAGING_SITE}) {
             $message .= '</p><p>Perhaps the bin/update-all-reports script needs running. Use: bin/update-all-reports</p><p>'
@@ -88,7 +103,7 @@ sub index : Path : Args(0) {
     $c->response->header('Cache-Control' => 'max-age=3600');
 }
 
-=head2 index
+=head2 body
 
 Show the summary page for a particular body.
 
@@ -99,7 +114,7 @@ sub body : Path : Args(1) {
     $c->detach( 'ward', [ $body ] );
 }
 
-=head2 index
+=head2 ward
 
 Show the summary page for a particular ward.
 
@@ -369,8 +384,6 @@ sub load_and_group_problems : Private {
     $c->forward('stash_report_sort', [ $c->cobrand->reports_ordering ]);
 
     my $page = $c->get_param('p') || 1;
-    # NB: If 't' is specified, it will override 'status'.
-    my $type = $c->get_param('t') || 'all';
     my $category = [ $c->get_param_list('filter_category', 1) ];
 
     my $states = $c->stash->{filter_problem_states};
@@ -396,25 +409,6 @@ sub load_and_group_problems : Private {
            columns => ['me.id'],
         })->as_query;
         $where->{'me.id'} = { -not_in => $shortlisted_ids };
-    }
-
-    my $not_open = [ FixMyStreet::DB::Result::Problem::fixed_states(), FixMyStreet::DB::Result::Problem::closed_states() ];
-    if ( $type eq 'new' ) {
-        $where->{confirmed} = { '>', \"current_timestamp - INTERVAL '4 week'" };
-        $where->{state} = { 'IN', [ FixMyStreet::DB::Result::Problem::open_states() ] };
-    } elsif ( $type eq 'older' ) {
-        $where->{confirmed} = { '<', \"current_timestamp - INTERVAL '4 week'" };
-        $where->{lastupdate} = { '>', \"current_timestamp - INTERVAL '8 week'" };
-        $where->{state} = { 'IN', [ FixMyStreet::DB::Result::Problem::open_states() ] };
-    } elsif ( $type eq 'unknown' ) {
-        $where->{lastupdate} = { '<', \"current_timestamp - INTERVAL '8 week'" };
-        $where->{state} = { 'IN',  [ FixMyStreet::DB::Result::Problem::open_states() ] };
-    } elsif ( $type eq 'fixed' ) {
-        $where->{lastupdate} = { '>', \"current_timestamp - INTERVAL '8 week'" };
-        $where->{state} = $not_open;
-    } elsif ( $type eq 'older_fixed' ) {
-        $where->{lastupdate} = { '<', \"current_timestamp - INTERVAL '8 week'" };
-        $where->{state} = $not_open;
     }
 
     if (@$category) {

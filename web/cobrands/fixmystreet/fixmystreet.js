@@ -379,17 +379,29 @@ $.extend(fixmystreet.set_up, {
     });
   },
 
+  autocomplete: function() {
+    $('.js-autocomplete').each(function() {
+        accessibleAutocomplete.enhanceSelectElement({
+            selectElement: this,
+            displayMenu: 'overlay',
+            required: true,
+            // showAllValues: true, // Currently undismissable on iOS
+            defaultValue: ''
+        });
+    });
+  },
+
   report_geolocation: function() {
     if (!geo_position_js.init()) {
         return;
     }
-    if ($('#postcodeForm').length) {
-        var link = '<a href="LINK" id="geolocate_link">&hellip; ' + translation_strings.geolocate + '</a>';
-        $('form[action="/alert/list"]').append(link.replace('LINK','/alert/list'));
+    if ($('.js-geolocate').length) {
+        var link = $('.js-geolocate').attr('action');
+        link = '<a href="' + link + '" id="geolocate_link">&hellip; ' + translation_strings.geolocate + '</a>';
         if ($('body.frontpage').length) {
-            $('#postcodeForm').after(link.replace('LINK','/around'));
+            $('.js-geolocate').after(link);
         } else{
-            $('#postcodeForm').append(link.replace('LINK','/around'));
+            $('.js-geolocate').append(link);
         }
         fixmystreet.geolocate.setup(function(pos) {
             var latitude = pos.coords.latitude;
@@ -503,6 +515,9 @@ $.extend(fixmystreet.set_up, {
         addRemoveLinks: true,
         thumbnailHeight: 150,
         thumbnailWidth: 150,
+        resizeWidth: 2048,
+        resizeHeight: 2048,
+        resizeQuality: 0.6,
         acceptedFiles: 'image/jpeg,image/pjpeg,image/gif,image/tiff,image/png',
         dictDefaultMessage: translation_strings.upload_default_message,
         dictCancelUploadConfirmation: translation_strings.upload_cancel_confirmation,

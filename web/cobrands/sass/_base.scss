@@ -50,12 +50,8 @@ h1 {
   margin-top: 0.5em;
   margin-bottom: 0.5em;
 }
-h1#reports_heading span {
-  display: none;
-}
-h1#reports_heading a {
-  display: block;
-  font-size: 50%;
+h1#reports_heading {
+  margin-bottom: 0;
 }
 
 h2 {
@@ -298,6 +294,21 @@ select.form-control {
     }
 }
 
+.form-group {
+  position: relative;
+  max-width: 27em;
+}
+
+.required-text {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.required-text--optional {
+  color: #666;
+}
+
 .form-section-heading {
     font-family: inherit;
     color: inherit;
@@ -389,7 +400,7 @@ select.form-control {
 }
 
 .form-txt-submit-box {
-  min-height:3em;
+  @include clearfix();
   input[type=password],
   input[type=text],
   input[type=email] {
@@ -412,6 +423,7 @@ select.form-control {
 .label-containing-checkbox {
   padding-#{$left}: 24px;
   position: relative;
+  margin-bottom: 0;
 
   input {
     position: absolute;
@@ -1856,6 +1868,10 @@ label .muted {
   & > :first-child > :first-child {
     margin-top: 0;
   }
+  label {
+    display: inline-block;
+    margin-top: 0.25em;
+  }
 }
 
 .inspect-section--hidden {
@@ -2252,7 +2268,7 @@ table.nicetable {
 .segmented-control--radio {
   input {
     position: absolute;
-    left: -999px;
+    opacity: 0;
   }
 
   input:checked + label {
@@ -2413,3 +2429,5 @@ table.nicetable {
 @import "_fixedthead";
 @import "_dropzone";
 @import "_multiselect";
+@import "_autocomplete";
+@import "_dashboard";

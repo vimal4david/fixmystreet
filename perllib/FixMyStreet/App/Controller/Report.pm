@@ -28,14 +28,11 @@ Redirect to homepage unless C<id> parameter in query, in which case redirect to
 sub index : Path('') : Args(0) {
     my ( $self, $c ) = @_;
 
-    my $id = $c->get_param('id');
-
-    my $uri =
-        $id
-      ? $c->uri_for( '/report', $id )
-      : $c->uri_for('/');
-
-    $c->res->redirect($uri);
+    if ($c->stash->{homepage_template}) {
+        $c->stash->{template} = 'index.html';
+    } else {
+        $c->res->redirect('/');
+    }
 }
 
 =head2 report_display
@@ -315,6 +312,8 @@ sub inspect : Private {
     if ($c->cobrand->can('council_area_id')) {
         my $priorities_by_category = FixMyStreet::App->model('DB::ResponsePriority')->by_categories($c->cobrand->council_area_id, @{$c->stash->{contacts}});
         $c->stash->{priorities_by_category} = $priorities_by_category;
+        my $templates_by_category = FixMyStreet::App->model('DB::ResponseTemplate')->by_categories($c->cobrand->council_area_id, @{$c->stash->{contacts}});
+        $c->stash->{templates_by_category} = $templates_by_category;
     }
 
     if ( $c->get_param('save') ) {
@@ -365,15 +364,9 @@ sub inspect : Private {
             if ( $problem->state ne $old_state ) {
                 $c->forward( '/admin/log_edit', [ $problem->id, 'problem', 'state_change' ] );
 
-                # If the state has been changed by an inspector, consider the
-                # report to be inspected.
-                unless ($problem->get_extra_metadata('inspected')) {
-                    $problem->set_extra_metadata( inspected => 1 );
-                    $c->forward( '/admin/log_edit', [ $problem->id, 'problem', 'inspected' ] );
-                    my $state = $problem->state;
-                    $reputation_change = 1 if $c->cobrand->reputation_increment_states->{$state};
-                    $reputation_change = -1 if $c->cobrand->reputation_decrement_states->{$state};
-                }
+                my $state = $problem->state;
+                $reputation_change = 1 if $c->cobrand->reputation_increment_states->{$state};
+                $reputation_change = -1 if $c->cobrand->reputation_decrement_states->{$state};
 
                 # If an inspector has changed the state, subscribe them to
                 # updates
@@ -383,6 +376,13 @@ sub inspect : Private {
                     lang         => $problem->lang,
                 };
                 $problem->user->create_alert($problem->id, $options);
+            }
+
+            # If the state has been changed to action scheduled and they've said
+            # they want to raise a defect, consider the report to be inspected.
+            if ($problem->state eq 'action scheduled' && $c->get_param('raise_defect') && !$problem->get_extra_metadata('inspected')) {
+                $problem->set_extra_metadata( inspected => 1 );
+                $c->forward( '/admin/log_edit', [ $problem->id, 'problem', 'inspected' ] );
             }
         }
 

@@ -72,8 +72,8 @@ sub to_bristol {
 sub warn_failure {
     my ($obj, $problem) = @_;
     # Special case a poorly behaving Open311 server
+    return 0 if to_bristol($problem || $obj);
     my $threshold = 1;
-    $threshold = 5 if to_bristol($problem || $obj);
     return $obj->send_fail_count && $obj->send_fail_count == $threshold;
 }
 
@@ -193,6 +193,7 @@ sub _generate_service_request_description {
             $description = "title: " . $problem->title . "\n\n$description";
         }
     } elsif ($problem->cobrand eq 'fixamingata') {
+        $description .= "Titel: " . $problem->title . "\n\n";
         $description .= "Beskrivning: " . $problem->detail . "\n\n";
         $description .= "Länk till ärendet: " . $extra->{url} . "\n\n";
         $description .= "Skickad via FixaMinGata\n";
