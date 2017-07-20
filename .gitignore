@@ -1,7 +1,4 @@
 _site
 mixture.json
 .DS_Store
-
-node_modules
-bower_components
 .sass-cache
