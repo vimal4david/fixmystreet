@@ -1,0 +1,75 @@
+<dl>
+  [% FOR pair IN contact.get_extra_metadata %]
+    <dt>[% pair.key %]</dt> <dd>[% pair.value %]</dd>
+  [% END %]
+</dl>
+<ul>
+  [% FOR meta IN contact.get_metadata_for_input %]
+    <li>
+        [% meta.order %], <code>[% meta.code %]</code>, [% meta.datatype %],
+        [% meta.required == 'true' ? loc('required') : loc('optional') %]
+        <br><small>[% meta.description %]</small>
+      [% IF meta.variable != 'false' AND meta.exists('values') %]
+        <ul>
+          [% FOR option IN meta.values %]
+            <li>[% option.name %] <small>([% option.key %])</small></li>
+          [% END %]
+        </ul>
+      [%- END %]
+    </li>
+    <li>
+        <label>
+            Order [% loop.index %]:
+            <input name="metadata[[% loop.index %]].order" type=text value="[% meta.order | html %]">
+        </label>
+
+        <label>
+            Code:
+            <input name="metadata[[% loop.index %]].code" type=text value="[% meta.code | html %]">
+        </label>
+
+        <label>
+            Type:
+            <select name="metadata[[% loop.index %]].datatype" >
+                <option value="string" [% meta.datatype == 'string' ? 'selected' : '' %]>String</option>
+                <option value="singlevaluelist" [% meta.datatype == 'singlevaluelist' ? 'selected' : '' %]>List</option>
+            </select>
+        </label>
+
+        <label>
+            Required:
+            <input name="metadata[[% loop.index %]].required"  type=checkbox [% meta.required == 'true' ? 'checked' : '' %]>
+        </label>
+
+        <label>
+            Description:
+            <input name="metadata[[% loop.index %]].description" type=text value="[% meta.description | html %]">
+        </label>
+
+        <label>
+            Hint:
+            <input name="metadata[[% loop.index %]].datatype_description" type=text value="[% meta.datatype_description | html %]">
+        </label>
+
+        [% IF meta.datatype == 'singlevaluelist' %]
+            Options:
+            <ul>
+            [% outer_loop = loop %]
+            [% FOREACH option IN meta.values %]
+                <li>
+                    <label>
+                        Value:
+                        <input name="metadata[[% outer_loop.index %]].values[[% loop.index %]].key"  type="text" value="[% option.key | html %]">
+                    </label>
+                    <label>
+                        Name:
+                        <input name="metadata[[% outer_loop.index %]].values[[% loop.index %]].name" type="text" value="[% option.name | html %]">
+                    </label>
+                </li>
+           [% END %]
+           </ul>
+           
+        [% END %]
+        
+  [%- END %]
+</ul>
