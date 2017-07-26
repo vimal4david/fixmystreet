@@ -17,14 +17,6 @@
         </label>
 
         <label>
-            Type:
-            <select name="metadata[[% loop.index %]].datatype" >
-                <option value="string" [% meta.datatype == 'string' ? 'selected' : '' %]>String</option>
-                <option value="singlevaluelist" [% meta.datatype == 'singlevaluelist' ? 'selected' : '' %]>List</option>
-            </select>
-        </label>
-
-        <label>
             Required:
             <input name="metadata[[% loop.index %]].required"  type=checkbox [% meta.required == 'true' ? 'checked' : '' %]>
         </label>
@@ -42,6 +34,15 @@
         <label>
             Hint:
             <input name="metadata[[% loop.index %]].datatype_description" type=text value="[% meta.datatype_description | html %]">
+        </label>
+
+        <label>
+            Type:
+            <select name="metadata[[% loop.index %]].datatype" >
+                <option value="string" [% meta.datatype == 'string' ? 'selected' : '' %]>String</option>
+                <option value="text" [% meta.datatype == 'text' ? 'selected' : '' %]>Text</option>
+                <option value="singlevaluelist" [% meta.datatype == 'singlevaluelist' ? 'selected' : '' %]>Radio button list</option>
+            </select>
         </label>
 
         [% IF meta.datatype == 'singlevaluelist' %]

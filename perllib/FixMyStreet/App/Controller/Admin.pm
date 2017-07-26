@@ -391,6 +391,8 @@ sub update_contacts : Private {
             $contact->set_extra_metadata( reputation_threshold => int($c->get_param('reputation_threshold')) );
         }
 
+        $c->forward('update_extra_fields', [ $contact ]);
+
         if ( %errors ) {
             $c->stash->{updated} = _('Please correct the errors below');
             $c->stash->{contact} = $contact;
@@ -1837,6 +1839,40 @@ sub fetch_body_areas : Private {
     $c->stash->{areas} = [ sort { strcoll($a->{name}, $b->{name}) } values %$areas ];
     # Keep track of the areas we've fetched to prevent a duplicate fetch later on
     $c->stash->{fetched_areas_body_id} = $body->id;
+}
+
+sub update_extra_fields : Private {
+    my ($self, $c, $object) = @_;
+
+    my @indices = grep { /^metadata\[\d+\]\.code/ } keys %{ $c->req->params };
+    @indices = sort map { $_ =~ /(\d+)/ } @indices;
+
+    $object->set_extra_fields(());
+    foreach my $i (@indices) {
+        my $meta = {};
+        $meta->{code} = $c->get_param("metadata[$i].code");
+        $meta->{order} = int $c->get_param("metadata[$i].order");
+        $meta->{datatype} = $c->get_param("metadata[$i].datatype");
+        $meta->{required} = $c->get_param("metadata[$i].required") eq 'on' ? 1 : 0;
+        $meta->{variable} = $c->get_param("metadata[$i].variable") eq 'on' ? 1 : 0;
+        $meta->{description} = $c->get_param("metadata[$i].description");
+        $meta->{datatype_description} = $c->get_param("metadata[$i].datatype_description");
+
+        if ( $meta->{datatype} eq "singlevaluelist" ) {
+            $meta->{values} = [];
+            my $re = "^metadata\\[$i\\]\\.values\\[\\d+\\]\\.key";
+            my @vindices = grep { /$re/ } keys %{ $c->req->params };
+            @vindices = sort map { $_ =~ /values\[(\d+)\]/ } @vindices;
+            foreach my $j (@vindices) {
+                push @{$meta->{values}}, {
+                    name => $c->get_param("metadata[$i].values[$j].name"),
+                    key => $c->get_param("metadata[$i].values[$j].key"),
+                };
+            }
+        }
+        
+        $object->push_extra_fields(($meta));
+    }
 }
 
 sub trim {
