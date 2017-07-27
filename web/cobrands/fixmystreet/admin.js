@@ -164,6 +164,7 @@ $(function(){
         return true;
     });
 
+    // Fields can be added/removed
     $(".js-metadata-item-add").on("click", function(e) {
         e.preventDefault();
         var $template_item = $(".js-metadata-items .js-metadata-item-template");
@@ -172,6 +173,12 @@ $(function(){
         $new_item.show();
         $new_item.insertBefore($template_item);
         $new_item.find("input").first().focus();
+        renumber_metadata_items();
+        return true;
+    });
+    $(".js-metadata-items").on("click", ".js-metadata-item-remove", function(e) {
+        e.preventDefault();
+        $(this).closest(".js-metadata-item").remove();
         renumber_metadata_items();
         return true;
     });
