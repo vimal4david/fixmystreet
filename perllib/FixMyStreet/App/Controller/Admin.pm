@@ -1864,10 +1864,12 @@ sub update_extra_fields : Private {
             my @vindices = grep { /$re/ } keys %{ $c->req->params };
             @vindices = sort map { $_ =~ /values\[(\d+)\]/ } @vindices;
             foreach my $j (@vindices) {
-                push @{$meta->{values}}, {
-                    name => $c->get_param("metadata[$i].values[$j].name"),
-                    key => $c->get_param("metadata[$i].values[$j].key"),
-                };
+                my $name = $c->get_param("metadata[$i].values[$j].name");
+                my $key = $c->get_param("metadata[$i].values[$j].key");
+                push(@{$meta->{values}}, {
+                    name => $name,
+                    key => $key,
+                }) if $name;
             }
         }
         

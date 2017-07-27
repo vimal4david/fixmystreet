@@ -163,3 +163,38 @@ $button_bg_col: #a1a1a1;  // also search bar (tables)
         float: left;
     }
 }
+
+.js-metadata-items {
+    margin: 0;
+
+    .js-metadata-item {
+        list-style: none;
+
+        &:nth-child(odd) {
+            background-color: #eee;
+        }
+    }
+
+    .js-metadata-options {
+        li {
+            list-style: none;
+
+            label, input[type=text] {
+                display: inline-block;
+                margin: 0;
+                padding: 0.25em;
+            }
+
+            &:nth-child(even) {
+                background-color: #ddd;
+            }
+            &:nth-child(odd) {
+                background-color: #ccc;
+            }
+        }
+    }
+
+    .js-visible {
+        display: none;
+    }
+}

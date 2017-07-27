@@ -3,9 +3,9 @@
     <dt>[% pair.key %]</dt> <dd>[% pair.value %]</dd>
   [% END %]
 </dl>
-<ul>
+<ul class="js-metadata-items">
   [% FOR meta IN contact.get_metadata_for_input %]
-    <li>
+    <li class="js-metadata-item" data-index="[% loop.index %]">
         <label>
             Order:
             <input name="metadata[[% loop.index %]].order" type=text value="[% meta.order | html %]">
@@ -38,32 +38,48 @@
 
         <label>
             Type:
-            <select name="metadata[[% loop.index %]].datatype" >
+            <select name="metadata[[% loop.index %]].datatype" class="js-metadata-item-type">
                 <option value="string" [% meta.datatype == 'string' ? 'selected' : '' %]>String</option>
-                <option value="text" [% meta.datatype == 'text' ? 'selected' : '' %]>Text</option>
-                <option value="singlevaluelist" [% meta.datatype == 'singlevaluelist' ? 'selected' : '' %]>Radio button list</option>
+                <option value="singlevaluelist" [% meta.datatype == 'singlevaluelist' ? 'selected' : '' %]>List</option>
             </select>
         </label>
 
-        [% IF meta.datatype == 'singlevaluelist' %]
-            Options:
+        <div class="js-metadata-options">
+            Options <span class="js-hidden">(ignored if type is 'String')</span>:
             <ul>
-            [% outer_loop = loop %]
-            [% FOREACH option IN meta.values %]
-                <li>
+                [% outer_loop = loop %]
+                [% IF meta.exists('values') %]
+                    [% option_index = 0 %]
+                    [% FOREACH option IN meta.values %]
+                        <li class="js-metadata-option">
+                            <label>
+                                Key:
+                                <input class="js-metadata-option-key" name="metadata[[% outer_loop.index %]].values[[% loop.index %]].key" type="text" value="[% option.key | html %]">
+                            </label>
+                            <label>
+                                Name:
+                                <input class="js-metadata-option-name" name="metadata[[% outer_loop.index %]].values[[% loop.index %]].name" type="text" value="[% option.name | html %]">
+                            </label>
+                            <button class="btn js-metadata-option-remove js-visible">Remove</button>
+                        </li>
+                    [% option_index = loop.index %]
+                    [% END %]
+                [% END %]
+                <li class="js-hidden js-metadata-option js-metadata-option-template">
                     <label>
-                        Value:
-                        <input name="metadata[[% outer_loop.index %]].values[[% loop.index %]].key"  type="text" value="[% option.key | html %]">
+                        Key:
+                        <input class="js-metadata-option-key" name="metadata[[% loop.index %]].values[[% option_index + 1 %]].key"  type="text" value="">
                     </label>
                     <label>
                         Name:
-                        <input name="metadata[[% outer_loop.index %]].values[[% loop.index %]].name" type="text" value="[% option.name | html %]">
+                        <input class="js-metadata-option-name" name="metadata[[% loop.index %]].values[[% option_index + 1 %]].name" type="text" value="">
                     </label>
+                    <button class="btn js-metadata-option-remove js-visible">Remove</button>
                 </li>
-           [% END %]
-           </ul>
-           
-        [% END %]
-        
+                <li>
+                    <button class="btn js-metadata-option-add js-visible">Add option</button>
+                </li>
+            </ul>
+        </div>
   [%- END %]
 </ul>

@@ -136,9 +136,7 @@ as well.") %]
     <input type="submit" class="btn" name="Create category" value="[% contact.in_storage ? loc('Save changes') : loc('Create category') %]" >
   </p>
 
-  [% IF contact.extra %]
   <h2>[% loc('Extra data:') %] </h2>
   [% INCLUDE 'admin/extra-metadata-form.html' %]
-  [% END %]
 
 </form>
