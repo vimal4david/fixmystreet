@@ -1851,6 +1851,7 @@ sub update_extra_fields : Private {
     foreach my $i (@indices) {
         my $meta = {};
         $meta->{code} = $c->get_param("metadata[$i].code");
+        next unless $meta->{code};
         $meta->{order} = int $c->get_param("metadata[$i].order");
         $meta->{datatype} = $c->get_param("metadata[$i].datatype");
         $meta->{required} = $c->get_param("metadata[$i].required") eq 'on' ? 1 : 0;

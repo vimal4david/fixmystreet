@@ -4,8 +4,8 @@
   [% END %]
 </dl>
 <ul class="js-metadata-items">
-  [% FOR meta IN contact.get_metadata_for_input %]
-    <li class="js-metadata-item" data-index="[% loop.index %]">
+  [% FOR meta IN contact.get_metadata_for_input.merge([{}]) %]
+    <li class="js-metadata-item [% IF loop.last %]js-hidden js-metadata-item-template[% END %]" data-index="[% loop.index %]">
         <label>
             Order:
             <input name="metadata[[% loop.index %]].order" type=text value="[% meta.order | html %]">
@@ -18,12 +18,12 @@
 
         <label>
             Required:
-            <input name="metadata[[% loop.index %]].required"  type=checkbox [% meta.required == 'true' ? 'checked' : '' %]>
+            <input name="metadata[[% loop.index %]].required"  type=checkbox [% meta.required ? 'checked' : '' %]>
         </label>
 
         <label>
             Variable:
-            <input name="metadata[[% loop.index %]].variable"  type=checkbox [% meta.variable == 'true' ? 'checked' : '' %]>
+            <input name="metadata[[% loop.index %]].variable"  type=checkbox [% meta.variable ? 'checked' : '' %]>
         </label>
 
         <label>
@@ -63,10 +63,14 @@
                         <button class="btn js-metadata-option-remove js-visible">Remove</button>
                     </li>
                 [% END %]
-                <li>
-                    <button class="btn js-metadata-option-add js-visible">Add option</button>
+                <li class="js-visible">
+                    <button class="btn js-metadata-option-add">Add option</button>
                 </li>
             </ul>
         </div>
+    </li>
   [%- END %]
+  <li class="js-visible">
+      <button class="btn js-metadata-item-add">Add field</button>
+  </li>
 </ul>

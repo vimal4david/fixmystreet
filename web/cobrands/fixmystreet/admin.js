@@ -154,15 +154,35 @@ $(function(){
     $(".js-metadata-items").on("click", ".js-metadata-option-add", function(e) {
         e.preventDefault();
         var $ul = $(this).closest("ul");
-        var $template_item = $ul.find(".js-metadata-option-template");
-        var $new_item = $template_item.clone();
-        $new_item.removeClass("js-hidden js-metadata-option-template");
-        $new_item.show();
-        $new_item.insertBefore($template_item);
-        $new_item.find("input").first().focus();
+        var $template_option = $ul.find(".js-metadata-option-template");
+        var $new_option = $template_option.clone();
+        $new_option.removeClass("js-hidden js-metadata-option-template");
+        $new_option.show();
+        $new_option.insertBefore($template_option);
+        $new_option.find("input").first().focus();
         renumber_metadata_options($(this).closest(".js-metadata-item"));
         return true;
     });
+
+    $(".js-metadata-item-add").on("click", function(e) {
+        e.preventDefault();
+        var $template_item = $(".js-metadata-items .js-metadata-item-template");
+        var $new_item = $template_item.clone();
+        $new_item.removeClass("js-hidden js-metadata-item-template");
+        $new_item.show();
+        $new_item.insertBefore($template_item);
+        $new_item.find("input").first().focus();
+        renumber_metadata_items();
+        return true;
+    });
+
+    function renumber_metadata_items() {
+        $(".js-metadata-item").each(function(i) {
+            var $item = $(this);
+            $item.data("index", i);
+            renumber_metadata_options($item);
+        });
+    }
 
     function renumber_metadata_options($item) {
         var item_index = $item.data("index");

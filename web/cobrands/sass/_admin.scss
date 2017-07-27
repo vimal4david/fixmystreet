@@ -167,12 +167,12 @@ $button_bg_col: #a1a1a1;  // also search bar (tables)
 .js-metadata-items {
     margin: 0;
 
-    .js-metadata-item {
+    li {
         list-style: none;
+    }
 
-        &:nth-child(odd) {
-            background-color: #eee;
-        }
+    .js-metadata-item:nth-child(odd) {
+        background-color: #eee;
     }
 
     .js-metadata-options {
