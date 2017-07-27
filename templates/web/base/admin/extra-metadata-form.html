@@ -45,37 +45,24 @@
         </label>
 
         <div class="js-metadata-options">
-            Options <span class="js-hidden">(ignored if type is 'String')</span>:
+            Options<span class="js-hidden"> (ignored if type is 'String')</span>:
             <ul>
                 [% outer_loop = loop %]
-                [% IF meta.exists('values') %]
-                    [% option_index = 0 %]
-                    [% FOREACH option IN meta.values %]
-                        <li class="js-metadata-option">
-                            <label>
-                                Key:
-                                <input class="js-metadata-option-key" name="metadata[[% outer_loop.index %]].values[[% loop.index %]].key" type="text" value="[% option.key | html %]">
-                            </label>
-                            <label>
-                                Name:
-                                <input class="js-metadata-option-name" name="metadata[[% outer_loop.index %]].values[[% loop.index %]].name" type="text" value="[% option.name | html %]">
-                            </label>
-                            <button class="btn js-metadata-option-remove js-visible">Remove</button>
-                        </li>
-                    [% option_index = loop.index %]
-                    [% END %]
+                [% values = meta.exists('values') ? meta.values : [] %]
+                [% FOREACH option IN values.merge([{}]) %]
+                [%# the .merge() call is so there's an empty one on the end %]
+                    <li class="js-metadata-option [% IF loop.last %]js-hidden js-metadata-option-template[% END %]">
+                        <label>
+                            Key:
+                            <input class="js-metadata-option-key" name="metadata[[% outer_loop.index %]].values[[% loop.index %]].key" type="text" value="[% option.key | html %]">
+                        </label>
+                        <label>
+                            Name:
+                            <input class="js-metadata-option-name" name="metadata[[% outer_loop.index %]].values[[% loop.index %]].name" type="text" value="[% option.name | html %]">
+                        </label>
+                        <button class="btn js-metadata-option-remove js-visible">Remove</button>
+                    </li>
                 [% END %]
-                <li class="js-hidden js-metadata-option js-metadata-option-template">
-                    <label>
-                        Key:
-                        <input class="js-metadata-option-key" name="metadata[[% loop.index %]].values[[% option_index + 1 %]].key"  type="text" value="">
-                    </label>
-                    <label>
-                        Name:
-                        <input class="js-metadata-option-name" name="metadata[[% loop.index %]].values[[% option_index + 1 %]].name" type="text" value="">
-                    </label>
-                    <button class="btn js-metadata-option-remove js-visible">Remove</button>
-                </li>
                 <li>
                     <button class="btn js-metadata-option-add js-visible">Add option</button>
                 </li>
