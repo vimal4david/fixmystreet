@@ -19,12 +19,12 @@
 
         <label>
             Required:
-            <input name="metadata[[% loop.index %]].required"  type=checkbox [% meta.required ? 'checked' : '' %]>
+            <input name="metadata[[% loop.index %]].required"  type=checkbox [% meta.required == 'true' ? 'checked' : '' %]>
         </label>
 
         <label>
             Variable:
-            <input name="metadata[[% loop.index %]].variable"  type=checkbox [% meta.variable ? 'checked' : '' %]>
+            <input name="metadata[[% loop.index %]].variable"  type=checkbox [% meta.variable == 'true' ? 'checked' : '' %]>
         </label>
 
         <label>

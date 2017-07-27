@@ -1854,8 +1854,8 @@ sub update_extra_fields : Private {
         next unless $meta->{code};
         $meta->{order} = int $c->get_param("metadata[$i].order");
         $meta->{datatype} = $c->get_param("metadata[$i].datatype");
-        $meta->{required} = $c->get_param("metadata[$i].required") eq 'on' ? 1 : 0;
-        $meta->{variable} = $c->get_param("metadata[$i].variable") eq 'on' ? 1 : 0;
+        $meta->{required} = $c->get_param("metadata[$i].required") eq 'on' ? 'true' : 'false';
+        $meta->{variable} = $c->get_param("metadata[$i].variable") eq 'on' ? 'true' : 'false';
         $meta->{description} = $c->get_param("metadata[$i].description");
         $meta->{datatype_description} = $c->get_param("metadata[$i].datatype_description");
 
