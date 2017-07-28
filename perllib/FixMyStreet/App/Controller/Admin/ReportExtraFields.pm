@@ -1,6 +1,7 @@
 package FixMyStreet::App::Controller::Admin::ReportExtraFields;
 use Moose;
 use namespace::autoclean;
+use List::MoreUtils qw(uniq);
 
 BEGIN { extends 'Catalyst::Controller'; }
 
@@ -47,6 +48,9 @@ sub edit : Path : Args(1) {
     }
 
     $c->forward('/auth/get_csrf_token');
+
+    my @cobrands = uniq sort map { $_->{moniker} } FixMyStreet::Cobrand->available_cobrand_classes;
+    $c->stash->{cobrands} = \@cobrands;
 
     $c->stash->{extra} = $extra;
 }

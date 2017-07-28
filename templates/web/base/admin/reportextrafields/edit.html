@@ -8,12 +8,21 @@
         </label>
     </p>
 
-    <p>
-        <label>
-            [% loc('Cobrand') %]
-            <input type=text name="cobrand" value="[% extra.cobrand | html %]" />
-        </label>
-    </p>
+    [% IF cobrands.size > 1 %]
+        <p>
+            <label>
+                [% loc('Cobrand') %]
+                <select name="cobrand">
+                    <option value="">All cobrands</option>
+                [% FOREACH cobrand IN cobrands %]
+                <option value="[% cobrand %]" [% IF cobrand == extra.cobrand %]selected[% END %]>[% cobrand %]</option>
+                [% END %]
+                </select>
+            </label>
+        </p>
+    [% ELSE %]
+        <input type=hidden name=cobrand value="[% extra.cobrand %]" />
+    [% END %]
 
     <p>
         <label>
