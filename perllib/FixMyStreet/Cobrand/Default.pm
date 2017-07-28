@@ -666,6 +666,10 @@ sub admin_pages {
         $pages->{users} = [ _('Users'), 6 ];
         $pages->{user_edit} = [ undef, undef ];
     }
+    if ( $self->call_hook('allow_report_extra_fields') && $user->has_body_permission_to('category_edit') ) {
+        $pages->{reportextrafields} = [ _('Extra Fields'), 10 ];
+        $pages->{reportextrafields_edit} = [ undef, undef ];
+    }
 
     return $pages;
 }

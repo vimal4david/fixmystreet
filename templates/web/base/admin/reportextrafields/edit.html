@@ -1,0 +1,36 @@
+[% INCLUDE 'admin/header.html' title=loc('Extra Fields') -%]
+
+<form method=post action="[% c.uri_for('', extra.id || 'new' ) %]">
+    <p>
+        <label>
+            [% loc('Name') %]
+            <input type=text name="name" value="[% extra.name | html %]" />
+        </label>
+    </p>
+
+    <p>
+        <label>
+            [% loc('Cobrand') %]
+            <input type=text name="cobrand" value="[% extra.cobrand | html %]" />
+        </label>
+    </p>
+
+    <p>
+        <label>
+            [% loc('Language') %]
+            <input type=text name="language" value="[% extra.language | html %]" />
+        </label>
+    </p>
+
+    <p>
+        <label>Fields</label>
+        [% INCLUDE 'admin/extra-metadata-form.html' metas=extra.get_extra_fields %]
+    </p>
+
+    <p>
+      <input type="hidden" name="token" value="[% csrf_token %]" >
+      <input type="submit" class="btn" name="save" value="[% extra.in_storage ? ('Save changes') : ('Create defect type') %]">
+    </p>
+</form>
+
+[% INCLUDE 'admin/footer.html' %]
