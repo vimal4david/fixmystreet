@@ -1,10 +1,5 @@
-<dl>
-  [% FOR pair IN contact.get_extra_metadata %]
-    <dt>[% pair.key %]</dt> <dd>[% pair.value %]</dd>
-  [% END %]
-</dl>
 <ul class="js-metadata-items">
-  [% FOR meta IN contact.get_metadata_for_input.merge([{}]) %]
+  [% FOR meta IN metas.merge([{}]) %]
     <li class="js-metadata-item [% IF loop.last %]js-hidden js-metadata-item-template[% END %]" data-index="[% loop.index %]">
         <button class="btn js-metadata-item-remove js-visible">Remove field</button>
         <label>

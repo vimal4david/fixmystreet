@@ -137,6 +137,11 @@ as well.") %]
   </p>
 
   <h2>[% loc('Extra data:') %] </h2>
-  [% INCLUDE 'admin/extra-metadata-form.html' %]
+  <dl>
+  [% FOR pair IN contact.get_extra_metadata %]
+    <dt>[% pair.key %]</dt> <dd>[% pair.value %]</dd>
+  [% END %]
+</dl>
+  [% INCLUDE 'admin/extra-metadata-form.html' metas=contact.get_metadata_for_input %]
 
 </form>
