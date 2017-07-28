@@ -1,7 +1,7 @@
 <ul class="js-metadata-items">
   [% FOR meta IN metas.merge([{}]) %]
     <li class="js-metadata-item [% IF loop.last %]js-hidden js-metadata-item-template[% END %]" data-index="[% loop.index %]">
-        <button class="btn js-metadata-item-remove js-visible">Remove field</button>
+        <button class="btn btn--small js-metadata-item-remove js-visible">Remove field</button>
         <label>
             Order:
             <input name="metadata[[% loop.index %]].order" type=text value="[% meta.order | html %]">
@@ -56,17 +56,17 @@
                             Name:
                             <input class="js-metadata-option-name" name="metadata[[% outer_loop.index %]].values[[% loop.index %]].name" type="text" value="[% option.name | html %]">
                         </label>
-                        <button class="btn js-metadata-option-remove js-visible">Remove</button>
+                        <button class="btn btn--small js-metadata-option-remove js-visible">Remove</button>
                     </li>
                 [% END %]
                 <li class="js-visible">
-                    <button class="btn js-metadata-option-add">Add option</button>
+                    <button class="btn btn--small js-metadata-option-add">Add option</button>
                 </li>
             </ul>
         </div>
     </li>
   [%- END %]
   <li class="js-visible">
-      <button class="btn js-metadata-item-add">Add field</button>
+      <button class="btn btn--small js-metadata-item-add">Add field</button>
   </li>
 </ul>
